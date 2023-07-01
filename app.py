@@ -60,6 +60,14 @@ def _get_object_metadata(key, size):
     mdata['ResponseMetadata'] = None
     return {'Metadata': mdata}
 
+@app.route('/api/info')
+def get_info():
+    return {
+        'bucket': minio.params['bucket_name'],
+        'endpoint_url': minio.params['endpoint_url'],
+        'aws_access_key_id': minio.params['accesskey'],
+        'aws_secret_access_key': minio.params['secretkey']
+    }
 
 @app.route('/api/object')
 def list_objects_in_bucket():
