@@ -48,7 +48,7 @@ def home(path):
 
 
 def _get_object_metadata(key, size):
-    bucket = minio.params['bucket_name']
+    bucket = minio.params['bucket']
     s3client = get_s3_client()
     mdata = s3client.get_object(Bucket=bucket, Key=key)
     size = mdata['ContentLength']
@@ -63,7 +63,7 @@ def _get_object_metadata(key, size):
 @app.route('/api/info')
 def get_info():
     return {
-        'bucket': minio.params['bucket_name'],
+        'bucket': minio.params['bucket'],
         'endpoint_url': minio.params['endpoint_url'],
         'aws_access_key_id': minio.params['accesskey'],
         'aws_secret_access_key': minio.params['secretkey']
@@ -71,7 +71,7 @@ def get_info():
 
 @app.route('/api/object')
 def list_objects_in_bucket():
-    bucket = minio.params['bucket_name']
+    bucket = minio.params['bucket']
     s3client = get_s3_client()
     objects = []
     try:
@@ -93,7 +93,7 @@ def get_object_metadata(key):
 
 @app.route('/api/object/<key>')
 def get_object_data(key):
-    bucket = minio.params['bucket_name']
+    bucket = minio.params['bucket']
     s3client = get_s3_client()
     obj_data = s3client.get_object(Bucket=bucket, Key=key)['Body'].read()
     enc_obj_data = b64encode(obj_data)
@@ -103,7 +103,7 @@ def get_object_data(key):
 @app.post('/api/object/<key>')
 def create_data_object(key):
     print(f'creating bucket object with key {key}...')
-    bucket = minio.params['bucket_name']
+    bucket = minio.params['bucket']
     s3client = get_s3_client()
     bytes = b64decode(request.data)
     s3client.put_object(Bucket=bucket, Key=key, Body=bytes)
@@ -113,7 +113,7 @@ def create_data_object(key):
 @app.delete('/api/object/<key>')
 def delete_data_object(key):
     print(f'deleting bucket object with key {key}...')
-    bucket = minio.params['bucket_name']
+    bucket = minio.params['bucket']
     s3client = get_s3_client()
     s3client.delete_object(Bucket=bucket, Key=key)
     return data_response(True)

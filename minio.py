@@ -5,7 +5,7 @@ from os import getenv
 _conf_folder = f"/configurations/{getenv('EP_APP')}-s3"
 is_deploy = Path(_conf_folder).exists()
 
-_params_keys = ["accesskey", "secretkey", "endpoint_url", "bucket_name"]
+_params_keys = ["accesskey", "secretkey", "endpoint_url", "bucket"]
 
 def _get_key_value(key):
     if (is_deploy):
